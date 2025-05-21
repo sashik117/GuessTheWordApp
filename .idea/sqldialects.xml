@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/ddl_clear_data_sqlite.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/ddl_sqlite.sql" dialect="SQLite" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/dml_sqlite.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/schema.sql" dialect="SQLite" />
+    <file url="file://$PROJECT_DIR$/src/test/java/com/guessthewordapp/test/repository/UserRepositoryTest.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/test/java/com/guessthewordapp/test/repository/WordRepositoryTest.java" dialect="GenericSQL" />
+  </component>
+</project>

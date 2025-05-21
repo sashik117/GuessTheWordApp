@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+  fx:controller="com.guessthewordapp.presentation.controllers.SettingsController"
+  alignment="CENTER"
+  spacing="20"
+  style="-fx-background-color: #f0f4f7; -fx-padding: 30;">
+
+  <VBox alignment="CENTER" spacing="25"
+    style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.5, 0, 0);">
+
+    <VBox alignment="CENTER" spacing="8">
+      <Label fx:id="titleLabel" text="Налаштування"
+        style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+    </VBox>
+
+    <VBox alignment="CENTER" spacing="15" maxWidth="300">
+      <Button text="Вийти з акаунта" onAction="#onLogoutClick"
+        style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20; -fx-padding: 10 20;"
+        fx:id="logoutButton"/>
+      <Button text="Увійти як адміністратор" onAction="#onAdminLoginClick"
+        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20; -fx-padding: 10 20;"
+        fx:id="adminLoginButton"/>
+      <Button text="Назад" onAction="#onBackClick"
+        style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20; -fx-padding: 10 20;"
+        fx:id="backButton"/>
+    </VBox>
+  </VBox>
+
+  <Button fx:id="fullscreenButton" text="Повноекранний режим" onAction="#toggleFullscreen"
+    style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-background-radius: 20px; -fx-padding: 8 20 8 20; -fx-font-size: 14px;"/>
+</VBox>

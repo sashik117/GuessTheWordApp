@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+  fx:controller="com.guessthewordapp.presentation.controllers.RegisterController"
+  alignment="CENTER"
+  spacing="20"
+  styleClass="container"
+  style="-fx-padding: 30; -fx-background-color: #f5f7fa;">
+
+  <VBox alignment="CENTER" spacing="30" maxWidth="400">
+    <!-- Заголовок -->
+    <VBox alignment="CENTER" spacing="10">
+      <Label text="Створення акаунта"
+        style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+      <Label text="Заповніть форму реєстрації"
+        style="-fx-text-fill: #7f8c8d; -fx-font-size: 14px;"/>
+    </VBox>
+
+    <!-- Форма реєстрації -->
+    <VBox alignment="CENTER" spacing="15" style="-fx-padding: 0 20px;">
+      <VBox spacing="5">
+        <Label text="Ім'я користувача" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
+        <TextField fx:id="usernameField" style="-fx-font-size: 14px; -fx-padding: 8;"/>
+      </VBox>
+
+      <VBox spacing="5">
+        <Label text="Електронна пошта" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
+        <TextField fx:id="emailField" promptText="example@mail.com" style="-fx-font-size: 14px; -fx-padding: 8;"/>
+      </VBox>
+
+      <VBox spacing="5">
+        <Label text="Пароль" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
+        <PasswordField fx:id="passwordField" style="-fx-font-size: 14px; -fx-padding: 8;"/>
+        <Label text="Мінімум 8 символів (літери та цифри)" style="-fx-text-fill: #95a5a6; -fx-font-size: 12px;"/>
+      </VBox>
+
+      <VBox spacing="5">
+        <Label text="Підтвердіть пароль" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
+        <PasswordField fx:id="confirmPasswordField" style="-fx-font-size: 14px; -fx-padding: 8;"/>
+      </VBox>
+
+      <Label fx:id="errorLabel" style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;"/>
+    </VBox>
+
+    <!-- Кнопки -->
+    <VBox alignment="CENTER" spacing="15" maxWidth="300">
+      <Button text="Зареєструватись" onAction="#handleRegister"
+        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20; -fx-padding: 10 20;"/>
+      <HBox alignment="CENTER" spacing="5">
+        <Label text="Вже є акаунт?" style="-fx-text-fill: #7f8c8d; -fx-font-size: 14px;"/>
+        <Button text="Увійти" onAction="#redirectToLogin"
+          style="-fx-background-color: transparent; -fx-text-fill: #3498db; -fx-font-size: 14px; -fx-underline: true;"/>
+      </HBox>
+    </VBox>
+  </VBox>
+
+  <!-- Кнопка повноекранного режиму -->
+  <Button fx:id="fullscreenButton" text="Повноекранний режим"
+    style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-background-radius: 20; -fx-padding: 8 20; -fx-font-size: 14px;"/>
+</VBox>
