@@ -1,88 +1,102 @@
 package com.guessthewordapp.presentation.controllers;
 
-import com.guessthewordapp.config.SpringContextProvider;
+import com.guessthewordapp.MainApp;
+
 import com.guessthewordapp.domain.enteties.User;
 import com.guessthewordapp.infrastructure.AuthenticationService;
+import com.guessthewordapp.presentation.view.viewmodels.LoginViewModel;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 @Component
 public class LoginController {
 
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+
     @FXML
     private TextField emailField;
+
     @FXML
     private PasswordField passwordField;
+
     @FXML
     private Label errorLabel;
+
     @FXML
-    private javafx.scene.control.Button fullscreenButton;
+    private Button loginButton;
 
-    private final AuthenticationService authService;
+    @FXML
+    private Button registerButton;
 
-    public LoginController(AuthenticationService authService) {
-        this.authService = authService;
+    @FXML
+    private Button fullscreenButton;
+
+    private final AuthenticationService authenticationService;
+    private final LoginViewModel loginViewModel;
+
+    @Autowired
+    public LoginController(AuthenticationService authenticationService, LoginViewModel loginViewModel) {
+        this.authenticationService = authenticationService;
+        this.loginViewModel = loginViewModel;
+        logger.debug("LoginController initialized");
     }
 
     @FXML
     private void initialize() {
-        // Можна додати логіку ініціалізації, якщо треба
+        logger.debug("LoginController: initialize() called");
+        // Bind UI to ViewModel
+        emailField.textProperty().bindBidirectional(loginViewModel.emailInputProperty());
+        passwordField.textProperty().bindBidirectional(loginViewModel.passwordInputProperty());
+        errorLabel.textProperty().bind(loginViewModel.errorLabelTextProperty());
+        errorLabel.styleProperty().bind(loginViewModel.errorLabelStyleProperty());
     }
 
     @FXML
-    private void onLoginClick() {
-        String email = emailField.getText();
+    private void handleLogin() {
+        String email = emailField.getText().trim();
         String password = passwordField.getText();
 
+        if (email.isEmpty() || password.isEmpty()) {
+            logger.warn("Login attempt with empty fields");
+            return;
+        }
+
         try {
-            User user = authService.login(email, password);
-            errorLabel.setStyle("-fx-text-fill: green;");
-            errorLabel.setText("Успішний вхід! Вітаємо, " + user.getUsername());
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main_menu.fxml"));
-            loader.setControllerFactory(SpringContextProvider.getApplicationContext()::getBean);
-            Parent root = loader.load();
-
-            Stage stage = (Stage) emailField.getScene().getWindow();
-            Scene scene = new Scene(root, 900, 650);
-            stage.setScene(scene);
-            stage.setTitle("Guess the Word — Головне меню");
-            stage.setFullScreen(true);  // Відкриваємо в повноекранному режимі
+            logger.debug("Attempting login for email: {}", email);
+            if (loginViewModel.login()) {
+                User user = authenticationService.login(email, password); // Для отримання userId
+                Long userId = user.getId();
+                logger.info("Login successful for userId: {}", userId);
+                MainApp.getInstance().setCurrentUserId(userId);
+                emailField.clear();
+                passwordField.clear();
+                MainApp.getInstance().showMainMenuScene();
+            }
+        } catch (IllegalArgumentException e) {
+            logger.warn("Login failed: {}", e.getMessage());
         } catch (Exception e) {
-            errorLabel.setStyle("-fx-text-fill: red;");
-            errorLabel.setText("Помилка: " + e.getMessage());
+            logger.error("Unexpected error during login", e);
         }
     }
 
     @FXML
-    private void onRegisterLinkClick() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/register.fxml"));
-            loader.setControllerFactory(SpringContextProvider.getApplicationContext()::getBean);
-            Parent root = loader.load();
-
-            Stage stage = (Stage) emailField.getScene().getWindow();
-            Scene scene = new Scene(root, 900, 650);
-            stage.setScene(scene);
-            stage.setTitle("Guess the Word — Реєстрація");
-            stage.setFullScreen(true);  // Відкриваємо в повноекранному режимі
-        } catch (IOException e) {
-            errorLabel.setText("Не вдалося відкрити форму реєстрації.");
-        }
+    private void handleRegisterLink() {
+        logger.debug("Switching to register scene");
+        MainApp.getInstance().showRegisterScene();
     }
 
     @FXML
     private void toggleFullscreen() {
-        Stage stage = (Stage) fullscreenButton.getScene().getWindow();
+        Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.setFullScreen(!stage.isFullScreen());
+        logger.debug("Toggled fullscreen mode: {}", stage.isFullScreen());
     }
 }

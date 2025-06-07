@@ -27,8 +27,8 @@ public class WordServiceImpl implements WordService {
     }
 
     @Override
-    public Optional<WordDTO> getWordById(Integer wordId) {
-        return wordRepository.findById(wordId)
+    public Optional<WordDTO> getWordById(Integer wordId) { // <--- wordId тепер Integer
+        return wordRepository.findById(wordId) // findById тепер очікує Integer
             .map(this::mapToDTO);
     }
 
@@ -41,23 +41,39 @@ public class WordServiceImpl implements WordService {
     }
 
     @Override
-    public void deleteWord(Integer wordId) {
-        wordRepository.delete(wordId);
+    public void deleteWord(Integer wordId) { // <--- wordId тепер Integer
+        wordRepository.delete(wordId); // delete тепер очікує Integer
     }
+
+    // Додайте інші методи з WordService.java, якщо вони є
+    // Наприклад, для updateWord:
+    // @Override
+    // public Optional<WordDTO> updateWord(Integer id, WordDTO updatedWord) {
+    //     Optional<Word> existingWord = wordRepository.findById(id);
+    //     if (existingWord.isPresent()) {
+    //         Word wordToUpdate = existingWord.get();
+    //         wordToUpdate.setText(updatedWord.getText());
+    //         wordToUpdate.setDifficulty(updatedWord.getDifficulty());
+    //         wordToUpdate.setLanguage(updatedWord.getLanguage());
+    //         wordToUpdate.setDescription(updatedWord.getDescription());
+    //         return Optional.of(mapToDTO(wordRepository.update(id, wordToUpdate))); // update тепер очікує Integer
+    //     }
+    //     return Optional.empty();
+    // }
 
     private Word mapToEntity(WordDTO dto) {
         return new Word(
-            dto.id(),
-            dto.text(),
-            dto.difficulty(),
-            dto.language(),
-            dto.description()
+            dto.getId(), // <--- getId() повертає Integer
+            dto.getText(),
+            dto.getDifficulty(),
+            dto.getLanguage(),
+            dto.getDescription()
         );
     }
 
     private WordDTO mapToDTO(Word entity) {
         return new WordDTO(
-            entity.getId(),
+            entity.getId(), // <--- getId() повертає Integer
             entity.getText(),
             entity.getDifficulty(),
             entity.getLanguage(),

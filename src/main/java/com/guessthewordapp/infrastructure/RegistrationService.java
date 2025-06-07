@@ -17,21 +17,43 @@ public class RegistrationService {
     }
 
     public void register(String username, String email, String password, UserRole role) {
-        Optional<User> existingUser = userRepository.findByEmail(email);
-
-        if (existingUser.isPresent()) {
-            throw new RuntimeException("Користувач з такою поштою вже існує");
+        // Валідація email
+        if (!isValidEmail(email)) {
+            throw new IllegalArgumentException("Невалідний email. Введіть коректну адресу");
         }
 
+        // Перевірка на дублікат
+        Optional<User> existingUser = userRepository.findByEmail(email);
+        if (existingUser.isPresent()) {
+            throw new IllegalArgumentException("Цей email уже використовується");
+        }
+
+        // Хешування пароля
         String hashedPassword = HashingService.hashPassword(password);
         User newUser = new User(null, username, email, hashedPassword, role);
 
-        userRepository.save(newUser);
+        // Збереження
+        try {
+            userRepository.save(newUser);
+        } catch (Exception e) {
+            throw new RuntimeException("Помилка при збереженні користувача: " + e.getMessage());
+        }
 
-        emailService.sendEmail(
-            email,
-            "Успішна реєстрація",
-            "Вітаємо у грі 'Вгадай слово', " + username + "!"
-        );
+        // Відправка email
+        try {
+            emailService.sendEmail(
+                email,
+                "Успішна реєстрація",
+                "Вітаємо у грі 'Вгадай слово', " + username + "!"
+            );
+        } catch (Exception e) {
+            // Логимо помилку, але не перериваємо реєстрацію
+            System.err.println("Failed to send registration email: " + e.getMessage());
+        }
+    }
+
+    private boolean isValidEmail(String email) {
+        String regex = "^[^\\s@]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        return email != null && email.matches(regex);
     }
 }

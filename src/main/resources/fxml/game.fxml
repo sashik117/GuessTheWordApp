@@ -5,41 +5,44 @@
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml"
+<BorderPane xmlns="http://javafx.com/javafx/17"
+  xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="com.guessthewordapp.presentation.controllers.GameController"
-  stylesheets="@/css/styles.css">
+  styleClass="root-background">
 
   <top>
-    <HBox styleClass="header-box" alignment="CENTER" spacing="20">
-      <Button text="← До меню" onAction="#returnToMainMenu" styleClass="back-button"/>
-      <Label text="Гра 'Вгадай слово'" styleClass="game-title"/>
-      <Button fx:id="fullscreenButton" text="Повноекранний" styleClass="secondary-button"/>
+    <HBox styleClass="header-box" alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 10;">
+      <Button text="← До меню" onAction="#returnToMainMenu" styleClass="secondary-action-button"/>
+      <Label text="Гра 'Вгадай слово'" styleClass="title-text" HBox.hgrow="ALWAYS" alignment="CENTER"/>
     </HBox>
   </top>
 
   <center>
-    <VBox styleClass="game-container" alignment="CENTER" spacing="30">
-      <VBox alignment="CENTER" spacing="15">
-        <Label fx:id="wordLabel" styleClass="word-display" text="_ _ _ _ _ _ _"/>
+    <VBox styleClass="game-panel" alignment="TOP_CENTER" spacing="30"
+      maxWidth="800" maxHeight="Infinity">
+      <VBox alignment="CENTER" spacing="15" VBox.vgrow="NEVER">
+        <Label fx:id="wordLabel" styleClass="word-display-label" text="_ _ _ _ _ _ _"/>
         <HBox spacing="30" alignment="CENTER">
-          <Label fx:id="attemptsLabel" styleClass="attempts-counter" text="Спроби: 10/10"/>
-          <ProgressBar fx:id="progressBar" styleClass="progress-bar" progress="1.0"/>
+          <Label fx:id="attemptsLabel" styleClass="attempts-counter-label" text="Спроби: 10/10"/>
+          <ProgressBar fx:id="progressBar" styleClass="progress-bar" progress="1.0" prefWidth="300" maxWidth="Infinity"/>
         </HBox>
       </VBox>
 
-      <VBox alignment="CENTER" spacing="15">
+      <VBox alignment="CENTER" spacing="15" VBox.vgrow="NEVER">
         <HBox spacing="10" alignment="CENTER">
-          <TextField fx:id="guessField" styleClass="guess-input" promptText="Введіть букву або слово"/>
-          <Button fx:id="submitButton" text="Перевірити" onAction="#handleGuess" styleClass="game-button"/>
+          <TextField fx:id="guessField" styleClass="text-input-field" promptText="Введіть букву або слово" HBox.hgrow="ALWAYS"/>
+          <Button fx:id="submitButton" text="Перевірити" onAction="#handleGuess" styleClass="primary-action-button"/>
         </HBox>
-        <Button fx:id="hintButton" text="Отримати підказку" onAction="#showHint" styleClass="game-button hint-button"/>
+        <Button fx:id="hintButton" text="Отримати підказку" onAction="#showHint" styleClass="secondary-action-button"/>
       </VBox>
 
-      <VBox fx:id="hintBox" styleClass="hint-box" alignment="CENTER" spacing="5">
-        <Label text="Підказки:" styleClass="hint-title"/>
+      <VBox fx:id="hintBox" styleClass="hint-container" alignment="TOP_LEFT" spacing="5" VBox.vgrow="ALWAYS"
+        maxWidth="Infinity" minHeight="100">
+        <Label fx:id="hintsTitleLabel" text="Підказки:" styleClass="panel-title"/>
       </VBox>
 
-      <VBox fx:id="lettersContainer" styleClass="keyboard-container"/>
+      <VBox fx:id="lettersContainer" styleClass="keyboard-container" alignment="CENTER" spacing="5" VBox.vgrow="NEVER"
+        maxWidth="Infinity"/>
     </VBox>
   </center>
 </BorderPane>

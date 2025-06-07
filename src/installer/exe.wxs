@@ -1,0 +1,2 @@
+candle.exe "src/installer/Product.wxs" -out "build/installer/"
+light.exe "build/installer/Product.wixobj" -out "dist/installer/Product.msi"

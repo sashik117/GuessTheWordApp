@@ -22,8 +22,9 @@ INSERT INTO User (username, email, password_hash, role) VALUES
 CREATE TABLE Word (
                       word_id INTEGER PRIMARY KEY AUTOINCREMENT,
                       text TEXT NOT NULL,
-                      difficulty INTEGER,
-                      language TEXT
+                      difficulty INTEGER NOT NULL,
+                      language TEXT NOT NULL,
+                      description TEXT
 );
 
 INSERT INTO Word (text, difficulty, language) VALUES
@@ -70,11 +71,13 @@ INSERT INTO Guess (session_id, word_id, guess_text, is_correct, guess_time) VALU
                      (1, 1, 'яблуко', 1, '2025-05-06T14:03:00');
 
 CREATE TABLE WordStats (
-                           stat_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                           word_id INTEGER NOT NULL,
-                           correct_count INTEGER,
-                           total_count INTEGER,
-                           FOREIGN KEY (word_id) REFERENCES Word(word_id)
+                        stat_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        word_id INTEGER NOT NULL,
+                        user_id INTEGER NOT NULL,
+                        correct_count INTEGER DEFAULT 0,
+                        total_count INTEGER DEFAULT 0,
+                        FOREIGN KEY (word_id) REFERENCES Word(word_id),
+                        FOREIGN KEY (user_id) REFERENCES User(id)
 );
 
 -- Заповнення таблиці WordStats на основі існуючих даних

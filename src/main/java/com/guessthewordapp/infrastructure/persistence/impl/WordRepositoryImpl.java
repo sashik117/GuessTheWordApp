@@ -1,8 +1,14 @@
 package com.guessthewordapp.infrastructure.persistence.impl;
 
+import static com.guessthewordapp.config.Database.columnExists;
+
 import com.guessthewordapp.domain.enteties.Word;
 import com.guessthewordapp.infrastructure.persistence.contract.WordRepository;
 import com.guessthewordapp.infrastructure.persistence.util.ConnectionPool;
+import com.guessthewordapp.infrastructure.persistence.Repository; // Додано для QueryFilter, DataAggregation
+import com.guessthewordapp.infrastructure.persistence.Repository.QueryFilter; // Імпортуємо вкладений клас QueryFilter
+import com.guessthewordapp.infrastructure.persistence.Repository.DataAggregation; // Імпортуємо вкладений клас DataAggregation
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +42,11 @@ public class WordRepositoryImpl implements WordRepository {
         }
     }
 
+    // Ці методи, схоже, не мають реалізації у вашому репозиторії,
+    // але вони є в інтерфейсі Repository. Якщо вони не потрібні,
+    // можливо, варто переглянути успадкування від Repository.
+    // Або ви їх ігноруєте для конкретної імплементації WordRepositoryImpl.
+    // Залишаємо їх як є, якщо це задумано.
     @Override
     public long count(QueryFilter filter) {
         return 0;
@@ -50,6 +61,7 @@ public class WordRepositoryImpl implements WordRepository {
     public <R> List<R> groupBy(DataAggregation aggregation, Function<ResultSet, R> resultMapper) {
         return List.of();
     }
+    // Кінець ігнорованих методів
 
     @Override
     public List<Word> findByLanguage(String language) {
@@ -88,11 +100,11 @@ public class WordRepositoryImpl implements WordRepository {
     }
 
     @Override
-    public Optional<Word> findById(Integer id) {
+    public Optional<Word> findById(Integer id) { // <--- ID тепер Integer
         final String sql = "SELECT * FROM Word WHERE word_id = ?";
         try (Connection conn = connectionPool.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
+            stmt.setInt(1, id); // <--- setInt для Integer
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return Optional.of(mapRowToWord(rs));
@@ -103,6 +115,8 @@ public class WordRepositoryImpl implements WordRepository {
             throw new RuntimeException("Помилка пошуку слова за ID", e);
         }
     }
+
+    // Ці методи, схоже, не мають реалізації у вашому репозиторії
     @Override
     public List<Word> findByField(String fieldName, Object value) {
         return List.of();
@@ -124,13 +138,14 @@ public class WordRepositoryImpl implements WordRepository {
     public List<Word> findAll(int offset, int limit) {
         return List.of();
     }
+    // Кінець ігнорованих методів
 
     @Override
     public Word save(Word word) {
         if (word.getId() == null) {
             return create(word);
         } else {
-            return update(word.getId(), word);
+            return update(word.getId(), word); // <--- getId() тепер Integer
         }
     }
 
@@ -140,11 +155,11 @@ public class WordRepositoryImpl implements WordRepository {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) { // <--- ID тепер Integer
         final String sql = "DELETE FROM Word WHERE word_id = ?";
         try (Connection conn = connectionPool.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
+            stmt.setInt(1, id); // <--- setInt для Integer
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
                 throw new RuntimeException("Не вдалося видалити слово з ID: " + id);
@@ -156,11 +171,15 @@ public class WordRepositoryImpl implements WordRepository {
 
     @Override
     public void deleteAll(List<Integer> integers) {
-
+        // Заглушка, якщо не реалізовано
     }
 
     @Override
     public Object extractId(Object entity) {
+        // Заглушка, якщо не реалізовано
+        if (entity instanceof Word) {
+            return ((Word) entity).getId();
+        }
         return null;
     }
 
@@ -178,7 +197,7 @@ public class WordRepositoryImpl implements WordRepository {
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    word.setId(rs.getInt(1));
+                    word.setId(rs.getInt(1)); // <--- getId() тепер Integer
                 }
             }
             return word;
@@ -188,7 +207,7 @@ public class WordRepositoryImpl implements WordRepository {
     }
 
     @Override
-    public Word update(Integer id, Word word) {
+    public Word update(Integer id, Word word) { // <--- ID тепер Integer
         final String sql = "UPDATE Word SET text = ?, difficulty = ?, language = ?, description = ? WHERE word_id = ?";
 
         try (Connection conn = connectionPool.getConnection();
@@ -198,7 +217,7 @@ public class WordRepositoryImpl implements WordRepository {
             stmt.setInt(2, word.getDifficulty());
             stmt.setString(3, word.getLanguage());
             stmt.setString(4, word.getDescription());
-            stmt.setInt(5, id);
+            stmt.setInt(5, id); // <--- setInt для Integer
             stmt.executeUpdate();
 
             return word;
@@ -214,11 +233,36 @@ public class WordRepositoryImpl implements WordRepository {
 
     private Word mapRowToWord(ResultSet rs) throws SQLException {
         Word word = new Word();
-        word.setId(rs.getInt("word_id"));
+        word.setId(rs.getInt("word_id")); // <--- getInt для Integer
         word.setText(rs.getString("text"));
         word.setDifficulty(rs.getInt("difficulty"));
         word.setLanguage(rs.getString("language"));
-        word.setDescription(rs.getString("description"));
+
+        // Безпечна перевірка наявності стовпця
+        // Тут ми припустимо, що columnExists знаходиться в com.guessthewordapp.config.Database
+        // або є допоміжним методом у цьому класі
+        try {
+            if (columnExists(rs, "description")) { // Використання вашого columnExists
+                word.setDescription(rs.getString("description"));
+            }
+        } catch (SQLException e) {
+            word.setDescription(""); // Fallback, якщо стовпець не знайдено
+            System.err.println("Увага: стовпець 'description' не знайдено. Встановлено порожній опис.");
+        }
+
         return word;
+    }
+
+    // Допоміжний метод columnExists, якщо він не в Database.java або ви хочете його тут
+    // Якщо він вже є у Database.java, то не додавайте його сюди.
+    private boolean columnExists(ResultSet rs, String columnName) throws SQLException {
+        ResultSetMetaData metaData = rs.getMetaData();
+        int columns = metaData.getColumnCount();
+        for (int i = 1; i <= columns; i++) {
+            if (columnName.equalsIgnoreCase(metaData.getColumnName(i))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -9,6 +9,9 @@ public record WordStatsDTO(
     @NotNull(message = "ID слова обов'язковий")
     Long wordId,
 
+    @NotNull(message = "ID користувача обов'язковий")
+    Long userId,
+
     @Min(value = 0, message = "Кількість вгадувань не може бути від'ємною")
     int correctCount,
 

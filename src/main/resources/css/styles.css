@@ -1,269 +1,749 @@
-/* Глобальні стилі */
+/* src/main/resources/css/styles.css - Light Theme */
+
+/* General Styles */
 .root {
     -fx-font-family: 'Segoe UI', sans-serif;
-    -fx-background-color: #f0f4f8; /* Світлий фон */
 }
 
-/* Контейнери */
-.container {
-    -fx-background-color: rgba(255, 255, 255, 0.9);
+.root-background {
+    -fx-background-color: linear-gradient(to bottom, #e0f2f7, #c1e4f0); /* Light blue gradient background */
+}
+
+/* Panel Styles */
+.form-panel, .main-menu-panel, .settings-panel, .stats-panel, .game-panel {
+    -fx-background-color: #ffffff; /* White background for panels */
     -fx-background-radius: 15px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0); /* Менша тінь */
-    -fx-padding: 30px;
     -fx-border-radius: 15px;
-    -fx-border-color: rgba(255, 255, 255, 0.2);
-    -fx-border-width: 1px;
+    -fx-padding: 30px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 15, 0, 0, 8); /* Softer, more prominent shadow */
 }
 
-/* Заголовки */
-.title {
-    -fx-font-size: 28px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #2c3e50; /* Темніший заголовок */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 0, 0, 0, 1); /* Легка тінь */
-}
-
-/* Текстові поля */
-.input-field {
-    -fx-background-color: white;
-    -fx-border-color: #e0e0e0; /* Світліша обводка */
-    -fx-border-radius: 8px;
-    -fx-padding: 12px 15px;
-    -fx-font-size: 14px;
-    -fx-min-width: 300px;
-    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1); /* Легша внутрішня тінь */
-}
-
-.input-field:focused {
-    -fx-border-color: #42a5f5; /* Яскрава обводка при фокусі */
-    -fx-effect: dropshadow(gaussian, rgba(66, 153, 225, 0.2), 5, 0, 0, 0); /* Менша тінь при фокусі */
-}
-
-/* Кнопки */
-.primary-button {
-    -fx-background-color: linear-gradient(to bottom, #42a5f5, #2979ff); /* Блакитний градієнт */
-    -fx-text-fill: white;
-    -fx-background-radius: 8px;
-    -fx-padding: 12px 30px;
-    -fx-font-size: 16px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1); /* Менша тінь */
-    -fx-transition: all 0.3s ease; /* Плавна анімація */
-}
-
-.primary-button:hover {
-    -fx-background-color: linear-gradient(to bottom, #64b5f6, #304ffe); /* Трохи світліший градієнт при наведенні */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 7, 0, 0, 1); /* Більша тінь при наведенні */
-}
-
-.secondary-button {
-    -fx-background-color: transparent;
-    -fx-border-color: #42a5f5; /* Блакитна обводка */
-    -fx-border-radius: 8px;
-    -fx-text-fill: #42a5f5; /* Блакитний текст */
-    -fx-padding: 10px 25px;
-    -fx-font-size: 14px;
-    -fx-cursor: hand;
-    -fx-transition: all 0.3s ease; /* Плавна анімація */
-}
-
-.secondary-button:hover {
-    -fx-background-color: rgba(66, 153, 225, 0.1); /* Легкий блакитний фон при наведенні */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1); /* Легка тінь при наведенні */
-}
-
-/* Спеціальні стилі */
-.error-label {
-    -fx-text-fill: #e53935; /* Червоний колір помилки */
-    -fx-font-size: 13px;
-}
-
-.stats-box {
-    -fx-background-color: rgba(255, 255, 255, 0.8);
+.stats-panel {
+    -fx-background-color: #f8fcfd; /* Slightly different background for stats panel */
+    -fx-border-color: #b3e0ff; /* Light blue border */
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
     -fx-background-radius: 10px;
-    -fx-padding: 20px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1); /* Менша тінь */
+    -fx-padding: 25px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 10, 0, 0, 4);
 }
 
-.stats-title {
-    -fx-font-size: 18px;
+
+/* Text Styles */
+.title-text {
+    -fx-font-size: 32px;
     -fx-font-weight: bold;
-    -fx-text-fill: #2c3e50; /* Темніший заголовок статистики */
+    -fx-text-fill: #2c3e50; /* Dark gray for headings */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 2, 0, 0, 1);
+}
+
+.subtitle-text, .info-text {
+    -fx-font-size: 16px;
+    -fx-text-fill: #7f8c8d; /* Medium gray */
+}
+
+.input-label {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e; /* Slightly darker gray for labels */
+}
+
+.hint-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #95a5a6;
+    -fx-font-style: italic;
+}
+
+.error-label {
+    -fx-text-fill: #e74c3c; /* Red for errors */
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.checkbox-text {
+    -fx-text-fill: #34495e;
+    -fx-font-size: 14px;
+}
+
+.hyperlink-text {
+    -fx-text-fill: #3498db; /* Blue for hyperlinks */
+    -fx-font-size: 14px;
+    -fx-underline: true;
+}
+
+.panel-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 0 0 10px 0;
+}
+
+.stats-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
 }
 
 .stats-value {
-    -fx-font-size: 16px;
-    -fx-font-weight: 600;
-    -fx-text-fill: #42a5f5; /* Блакитний колір для значень */
-}
-
-/* Стилі для гри "Вгадай слово" */
-.game-container {
-    -fx-alignment: center;
-    -fx-spacing: 30px;
-}
-
-.word-display {
-    -fx-font-size: 48px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #2c3e50; /* Темно-сірий колір слова */
-    -fx-letter-spacing: 10px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 1, 1, 1, 1); /* Легка тінь */
-    -fx-padding: 10px;
-    -fx-border-radius: 10px;
-    /* Додано стилі для відображення літер з різним кольором */
-}
-.word-display > .letter-correct {
-    -fx-text-fill: #2ecc71; /* Зелений для правильних літер */
-}
-
-.word-display > .letter-incorrect {
-    -fx-text-fill: #e74c3c; /* Червоний для неправильних літер */
-}
-.word-display > .letter-neutral{
-    -fx-text-fill: #2c3e50;
-}
-
-
-.attempts-counter {
     -fx-font-size: 18px;
-    -fx-text-fill: #7f8c8d; /* Сірий колір лічильника спроб */
+    -fx-font-weight: 600;
+    -fx-text-fill: #27ae60; /* Green for positive stats */
+}
+
+/* New styles for GameView */
+.word-display-label {
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 10px;
+    -fx-background-color: #f0f8ff;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #d0e0f0;
+    -fx-border-width: 1px;
+}
+
+.attempts-counter-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+}
+
+/* Input Fields */
+.text-input-field {
+    -fx-background-color: #fefefe;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 15px;
+    -fx-font-size: 15px;
+    -fx-min-width: 280px;
+    -fx-prompt-text-fill: #a0a0a0;
+}
+
+.text-input-field:focused {
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.2), 5, 0, 0, 0);
+}
+
+
+/* Buttons */
+.primary-action-button {
+    -fx-background-color: linear-gradient(to bottom, #3498db, #2980b9); /* Blue gradient */
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px 35px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 4); /* Збільшена тінь */
+    -fx-transition: all 0.2s ease-in-out; /* Додано перехід */
+}
+
+.primary-action-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #2980b9, #3498db);
+    -fx-scale-y: 1.05; /* Збільшена анімація */
+    -fx-scale-x: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 12, 0, 0, 6); /* Збільшена тінь при наведенні */
+}
+.primary-action-button:pressed {
+    -fx-background-color: #1a648d;
+    -fx-scale-y: 0.95; /* Зменшена анімація */
+    -fx-scale-x: 0.95;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 0, 2); /* Менша тінь при натисканні */
+}
+
+.secondary-action-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #3498db;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-text-fill: #3498db;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 30px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease-in-out; /* Додано перехід */
+}
+
+.secondary-action-button:hover {
+    -fx-background-color: rgba(52, 152, 219, 0.1); /* Light blue transparent background */
+    -fx-scale-y: 1.05;
+    -fx-scale-x: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.2), 8, 0, 0, 4); /* Тінь при наведенні */
+}
+.secondary-action-button:pressed {
+    -fx-background-color: rgba(52, 152, 219, 0.2);
+    -fx-scale-y: 0.95;
+    -fx-scale-x: 0.95;
+    -fx-effect: none; /* Прибрана тінь при натисканні */
+}
+
+.danger-button {
+    -fx-background-color: linear-gradient(to bottom, #e74c3c, #c0392b); /* Red gradient */
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px 35px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 4); /* Збільшена тінь */
+    -fx-transition: all 0.2s ease-in-out; /* Додано перехід */
+}
+
+.danger-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #c0392b, #e74c3c);
+    -fx-scale-y: 1.05;
+    -fx-scale-x: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 12, 0, 0, 6); /* Збільшена тінь при наведенні */
+}
+.danger-button:pressed {
+    -fx-background-color: #922b21;
+    -fx-scale-y: 0.95;
+    -fx-scale-x: 0.95;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 0, 2); /* Менша тінь при натисканні */
+}
+
+.text-only-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #3498db; /* Blue text */
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-underline: true;
+    -fx-cursor: hand;
+    -fx-padding: 5px 0;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.text-only-button:hover {
+    -fx-text-fill: #2980b9; /* Darker blue on hover */
+    -fx-scale-y: 1.05;
+}
+.text-only-button:pressed {
+    -fx-text-fill: #1f618d;
+    -fx-scale-y: 0.95;
+}
+
+.large-button {
+    -fx-min-width: 250px;
+    -fx-max-width: 250px;
+}
+
+.arrow-button {
+    -fx-background-color: #ecf0f1; /* Light gray */
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-size: 20px;
+    -fx-text-fill: #34495e;
+    -fx-padding: 5px 15px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.arrow-button:hover {
+    -fx-background-color: #dde1e2;
+    -fx-border-color: #aeb5bb;
+    -fx-scale-y: 1.05;
+    -fx-scale-x: 1.05;
+}
+
+/* Theme Toggle Button in Settings */
+.theme-toggle-button {
+    -fx-background-color: #ecf0f1;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-padding: 8px 20px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #34495e;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1);
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.theme-toggle-button:hover {
+    -fx-background-color: #dde1e2;
+    -fx-scale-y: 1.05;
+}
+
+.theme-toggle-button:selected {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-border-color: #2980b9;
+}
+
+.fullscreen-toggle-button {
+    -fx-background-color: #7f8c8d; /* Muted gray */
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-padding: 8px 20px;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3, 0, 0, 1);
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.fullscreen-toggle-button:hover {
+    -fx-background-color: #6c7a7e;
+    -fx-scale-y: 1.05;
+}
+
+/* Keyboard Button Styles */
+.keyboard-button {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1);
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.keyboard-button:hover {
+    -fx-background-color: #e0e0e0;
+    -fx-border-color: #bbbbbb;
+    -fx-scale-y: 1.05;
+    -fx-scale-x: 1.05;
+}
+
+.keyboard-button:pressed {
+    -fx-background-color: #d0d0d0;
+    -fx-border-color: #aaaaaa;
+    -fx-scale-y: 0.95;
+    -fx-scale-x: 0.95;
+}
+
+.keyboard-button-correct {
+    -fx-background-color: #2ecc71; /* Green for correct */
+    -fx-border-color: #27ae60;
+    -fx-text-fill: white;
+}
+
+.keyboard-button-incorrect {
+    -fx-background-color: #e74c3c; /* Red for incorrect */
+    -fx-border-color: #c0392b;
+    -fx-text-fill: white;
+}
+
+/* Additional bold style for labels in game */
+.bold-text {
+    -fx-font-weight: bold;
+}
+
+/* --- СТИЛІ ДЛЯ СЕКЦІЇ СТАТИСТИКИ (ОНОВЛЕНО ДЛЯ СВІТЛОЇ ТЕМИ З ЖИРНІШОЮ РАМКОЮ) --- */
+
+.stats-panel-with-title {
+    -fx-border-color: #9370DB; /* Колір рамки (фіолетовий) */
+    -fx-border-width: 4px; /* Зроблено рамку жирнішою */
+    -fx-border-radius: 10px;
+    -fx-padding: 20px 25px;
+    -fx-background-color: rgba(255, 255, 255, 0.8); /* Напівпрозорий білий фон */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);
+    -fx-max-width: 450px;
+    -fx-alignment: center;
+}
+
+.panel-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e; /* Темний текст */
+    -fx-alignment: center;
+}
+
+.stats-separator {
+    -fx-background-color: #a8bdd5; /* Колір лінії */
+    -fx-pref-height: 2px;
+    -fx-pref-width: 80%;
+    -fx-max-width: 300px;
+    -fx-padding: 15px 0;
+}
+
+.stats-label-large {
+    -fx-text-fill: #555; /* Темно-сірий колір тексту */
+    -fx-font-size: 17px;
+}
+
+.stats-value-large {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+/* Кольори для значень статистики - залишаємо за ID */
+#guessedLabel { -fx-text-fill: #2ecc71; }
+#attemptsLabel { -fx-text-fill: #3498db; }
+#successRateLabel { -fx-text-fill: #f39c12; }
+
+/* --- СТИЛІ ДЛЯ СТРІЛОЧОК (ОНОВЛЕНО ДЛЯ СВІТЛОЇ ТЕМИ) --- */
+
+.arrow-button {
+    -fx-font-size: 20px;
+    -fx-background-radius: 15;
+    -fx-padding: 5 15;
+    -fx-background-color: #e0e0e0; /* Світло-сірий фон стрілочки */
+    -fx-text-fill: #2c3e50; /* Темний текст */
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 2, 0, 0, 1);
+    -fx-transition: background-color 0.2s ease-in-out, -fx-scale-x 0.2s ease-in-out, -fx-scale-y 0.2s ease-in-out;
+}
+
+.arrow-button:hover {
+    -fx-background-color: #d0d0d0; /* Темніший сірий при наведенні */
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+/* --- СТИЛІ ДЛЯ КЛАВІАТУРИ В ГРІ (ОНОВЛЕНО) --- */
+
+.keyboard-container {
+    -fx-padding: 15px; /* Загальний внутрішній відступ контейнера клавіатури */
+    -fx-background-color: rgba(255, 255, 255, 0.9); /* Світлий напівпрозорий фон */
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);
+    -fx-alignment: center;
+}
+
+.keyboard-button {
+    -fx-background-color: #ecf0f1; /* Світло-сірий фон кнопки */
+    -fx-text-fill: #2c3e50; /* Темний текст */
+    -fx-font-size: 18px; /* Збільшений розмір шрифту для літер */
+    -fx-font-weight: bold; /* Зробимо шрифт жирним */
+    -fx-min-width: 45px; /* Мінімальна ширина кнопки (трохи збільшено) */
+    -fx-pref-width: 45px; /* Переважна ширина кнопки */
+    -fx-min-height: 45px; /* Мінімальна висота кнопки (трохи збільшено) */
+    -fx-pref-height: 45px; /* Переважна висота кнопки */
+    -fx-background-radius: 8px; /* Заокруглені кути */
+    -fx-border-color: #bdc3c7; /* Легка рамка */
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-cursor: hand;
+    -fx-transition: -fx-background-color 0.2s ease-in-out, -fx-scale-x 0.1s ease-in-out, -fx-scale-y 0.1s ease-in-out;
+}
+
+.keyboard-button:hover {
+    -fx-background-color: #dcdde1; /* Темніший сірий при наведенні */
+    -fx-scale-x: 1.05; /* Легке збільшення при наведенні */
+    -fx-scale-y: 1.05;
+}
+
+.keyboard-button:pressed {
+    -fx-background-color: #b0b0b0; /* Ще темніший при натисканні */
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+.keyboard-button-correct {
+    -fx-background-color: #2ecc71; /* Зелений для правильних літер */
+    -fx-text-fill: white;
+    -fx-border-color: #27ae60;
+}
+
+.keyboard-button-incorrect {
+    -fx-background-color: #e74c3c; /* Червоний для неправильних літер */
+    -fx-text-fill: white;
+    -fx-border-color: #c0392b;
+}
+
+/* --- ІНШІ СТИЛІ (залишаємо як було) --- */
+
+.header-box {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);
+    -fx-padding: 10px 20px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.game-panel {
+    -fx-background-color: white;
+    -fx-padding: 30;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.5, 0, 0);
+    -fx-spacing: 25px;
+}
+
+.title-text {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-alignment: center;
+}
+
+.word-display-label {
+    -fx-font-size: 38px; /* Збільшений розмір слова */
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+    -fx-padding: 10px;
+    -fx-background-color: #ecf0f1;
+    -fx-background-radius: 5px;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+}
+
+.attempts-counter-label {
+    -fx-font-size: 18px;
+    -fx-text-fill: #555;
+    -fx-font-weight: bold;
+}
+
+.progress-bar .bar {
+    -fx-background-color: linear-gradient(to top, #2ecc71, #27ae60); /* Градієнт для заповнення */
+    -fx-background-insets: 0;
+    -fx-background-radius: 5;
+}
+
+.progress-bar {
+    -fx-control-inner-background: #ecf0f1; /* Фон смуги прогресу */
+    -fx-background-radius: 5;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5;
+}
+
+
+.text-input-field {
+    -fx-font-size: 16px;
+    -fx-padding: 10px;
+    -fx-background-color: white;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-prompt-text-fill: #95a5a6;
+    -fx-min-width: 200px;
+}
+
+.primary-action-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-background-radius: 20;
+    -fx-padding: 10px 25px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.primary-action-button:hover {
+    -fx-background-color: #2980b9;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.secondary-action-button {
+    -fx-background-color: #95a5a6;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-padding: 10px 25px;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1);
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.secondary-action-button:hover {
+    -fx-background-color: #7f8c8d;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.hint-container {
+    -fx-background-color: #f8f9fa; /* Світліший фон для підказок */
+    -fx-border-color: #ced4da;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-padding: 15px;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1);
+    -fx-max-width: 400px; /* Обмеження ширини */
 }
 
 .hint-text {
     -fx-font-size: 16px;
-    -fx-text-fill: #3498db; /* Блакитний колір підказки */
+    -fx-text-fill: #34495e;
+    -fx-padding: 5px 0;
     -fx-font-style: italic;
-    -fx-background-color: rgba(66, 153, 225, 0.1);
-    -fx-padding: 8px;
-    -fx-border-radius: 5px;
-    -fx-margin: 5px 0;
-}
-.hint-container{
     -fx-alignment: center;
-    -fx-spacing: 5px;
 }
 
-.guess-input {
-    -fx-background-color: white;
-    -fx-border-color: #e0e0e0;
-    -fx-border-radius: 8px;
-    -fx-padding: 12px 15px;
-    -fx-font-size: 14px;
-    -fx-min-width: 200px;
-    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1);
+/* Стилі для жирного тексту */
+.bold-text {
+    -fx-font-weight: bold;
 }
 
-.guess-input:focused {
-    -fx-border-color: #42a5f5;
-    -fx-effect: dropshadow(gaussian, rgba(66, 153, 225, 0.2), 5, 0, 0, 0);
-}
-
-.game-button {
-    -fx-background-color: linear-gradient(to bottom, #4caf50, #388e3c); /* Зелений градієнт */
+/* Стиль для кнопки повноекранного режиму */
+.fullscreen-toggle-button {
+    -fx-background-color: #7f8c8d;
     -fx-text-fill: white;
-    -fx-background-radius: 8px;
-    -fx-padding: 12px 30px;
-    -fx-font-size: 16px;
+    -fx-background-radius: 20px;
+    -fx-padding: 8 20 8 20;
+    -fx-font-size: 14px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
-    -fx-transition: all 0.3s ease;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1);
+    -fx-transition: all 0.2s ease-in-out;
 }
 
-.game-button:hover {
-    -fx-background-color: linear-gradient(to bottom, #66bb6a, #43a047);
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 7, 0, 0, 1);
-}
-.game-button:disabled{
-    -fx-opacity: 0.5;
-    -fx-effect: none;
+.fullscreen-toggle-button:hover {
+    -fx-background-color: #6c7a89;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
 }
 
-.hint-button {
-    -fx-background-color: #ffc107; /* Жовтий колір кнопки підказки */
-    -fx-text-fill: #212121;
+/* styles.css та dark-theme.css */
+
+/* Стиль для кнопки Адмін-панелі */
+.admin-button {
+    -fx-background-color: #8A2BE2; /* Колір: синьо-фіолетовий (Blue Violet) */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.0, 0, 2);
+}
+
+.admin-button:hover {
+    -fx-background-color: #9370DB; /* Світліший відтінок для ховеру (MediumPurple) */
+}
+
+.admin-button:pressed {
+    -fx-background-color: #6A0DAD; /* Темніший відтінок для натискання (DarkViolet) */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.0, 0, 1);
+}
+
+/* src/main/resources/css/styles.css - Light Theme */
+
+/* ... (ваш існуючий CSS для світлої теми) ... */
+
+/* Panel Styles - Вже існують, але перевірте, чи вони застосовуються до .container */
+.container { /* Клас, який ти застосувала до VBox у AdminWordController.fxml */
+    -fx-background-color: #ffffff; /* Білий фон для контейнера */
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-padding: 30px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 15, 0, 0, 8);
+}
+
+/* Styles for the Search & Filter section */
+.search-filter-box { /* Додайте цей клас до HBox, де searchField, filterToggle і backButton */
+    -fx-spacing: 15px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Styles for CheckBox (якщо клас не існує, додай) */
+.filter-toggle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #34495e;
+    -fx-selected-box-color: #3498db;
+}
+
+/* Styles for TableView (Words Table) - ОНОВЛЕНО */
+.words-table { /* Клас, який ти застосувала до TableView */
+    -fx-background-color: #ffffff; /* Білий фон для таблиці */
+    -fx-border-color: #9370DB; /* Темно-фіолетова рамка */
+    -fx-border-width: 4px; /* Жирна рамка */
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 10, 0, 0, 4);
+    -fx-font-size: 14px; /* Загальний шрифт для таблиці */
+}
+
+/* TableView Headers */
+.words-table .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #d0e0f0, #c1e4f0); /* Light blue gradient for header */
+    -fx-background-radius: 10px 10px 0 0;
+}
+
+.words-table .column-header {
+    -fx-text-fill: #2c3e50; /* Dark text for header */
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
+/* TableView Cells */
+.words-table .table-cell {
+    -fx-text-fill: #444444; /* Dark gray text for cells */
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 8px;
+}
+
+.words-table .table-row-cell {
+    -fx-background-color: -fx-table-cell-border-color, #ffffff; /* White background for rows */
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0em; /* Removes extra padding */
+}
+
+.words-table .table-row-cell:odd {
+    -fx-background-color: -fx-table-cell-border-color, #f8fcfd; /* Slightly lighter for odd rows */
+}
+
+.words-table .table-row-cell:selected {
+    -fx-background-color: #b3e0ff; /* Light blue when selected */
+    -fx-text-fill: #2c3e50;
+}
+
+/* Styles for the Form section (Text, Language, Difficulty, Description) - ОНОВЛЕНО */
+.form-section { /* Клас для VBox, де знаходяться поля введення */
+    -fx-spacing: 10px;
+    -fx-background-color: #f8fcfd; /* Slightly different background for form section */
+    -fx-border-color: #b3e0ff; /* Light blue border */
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 25px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 10, 0, 0, 4);
+}
+
+/* Input Fields (Вже існують як .text-input-field) - переконайтеся, що ви використовуєте .input-field в FXML */
+/* Я залишив .input-field в FXML, тому перевірте, чи він є у вашому CSS, або перейменуйте .text-input-field на .input-field */
+.input-field {
+    -fx-background-color: #fefefe;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 15px;
+    -fx-font-size: 15px;
+    -fx-prompt-text-fill: #a0a0a0;
+    -fx-text-fill: #333333;
+}
+
+.input-field:focused {
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.2), 5, 0, 0, 0);
+}
+
+/* Buttons - Вже існують як .primary-action-button, .secondary-action-button, .danger-button */
+/* Переконайтеся, що ви використовуєте ці класи в FXML для кнопок "Зберегти", "Вийти", "Видалити" */
+/* ... (ваші стилі для .primary-action-button, .secondary-action-button, .danger-button) ... */
+
+/* Додайте, якщо немає: */
+.danger-button {
+    -fx-background-color: linear-gradient(to bottom, #e74c3c, #c0392b); /* Red gradient */
+    -fx-text-fill: white;
+    -fx-font-size: 16px; /* Адаптуйте розмір, якщо потрібно */
+    -fx-font-weight: bold;
     -fx-background-radius: 8px;
     -fx-padding: 10px 25px;
-    -fx-font-size: 14px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
-    -fx-transition: all 0.3s ease;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-transition: all 0.2s ease-in-out;
 }
 
-.hint-button:hover {
-    -fx-background-color: #ffd54f;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 7, 0, 0, 1);
+.danger-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #c0392b, #e74c3c);
+    -fx-scale-y: 1.03;
+    -fx-scale-x: 1.03;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 3);
 }
-.hint-button:disabled{
-    -fx-opacity: 0.5;
+.danger-button:pressed {
+    -fx-background-color: #922b21;
+    -fx-scale-y: 0.97;
+    -fx-scale-x: 0.97;
     -fx-effect: none;
-}
-
-.keyboard-container {
-    -fx-alignment: center;
-    -fx-spacing: 8px;
-}
-
-.keyboard-button {
-    -fx-background-color: #e0e0e0; /* Світло-сірий колір кнопок клавіатури */
-    -fx-text-fill: #2c3e50;
-    -fx-font-size: 16px;
-    -fx-min-width: 48px;
-    -fx-min-height: 48px;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 2, 0, 0, 1); /* Дуже легка тінь */
-    -fx-transition: all 0.2s ease;
-}
-
-.keyboard-button:hover {
-    -fx-background-color: #b0bec5; /* Трохи темніший при наведенні */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3, 0, 0, 1); /* Легка тінь при наведенні */
-}
-
-.keyboard-button:disabled {
-    -fx-background-color: #f5f5f5; /* Ще світліший для вимкнених */
-    -fx-text-fill: #9e9e9e; /* Сірий текст для вимкнених */
-    -fx-effect: none;
-    -fx-opacity: 1;
-}
-.keyboard-correct {
-    -fx-background-color: #4caf50;
-    -fx-text-fill: white;
-}
-.keyboard-incorrect{
-    -fx-background-color: #e53935;
-    -fx-text-fill: white;
-}
-
-/* Прогрес бар */
-.progress-bar {
-    -fx-pref-width: 300px;
-    -fx-pref-height: 10px;
-}
-
-.progress-bar .bar {
-    -fx-background-color: linear-gradient(to right, #42a5f5, #2979ff); /* Блакитний градієнт */
-    -fx-background-radius: 5px;
-}
-
-.progress-bar .track {
-    -fx-background-color: #e0e0e0; /* Світло-сірий фон прогрес бару */
-    -fx-background-radius: 5px;
-}
-.message-label{
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #2c3e50;
-    -fx-alignment: center;
-    -fx-min-height: 30px;
-    -fx-opacity: 0;
-    -fx-transition: opacity 0.3s ease;
-}
-.message-label.win-message {
-    -fx-text-fill: #2ecc71; /* Зелений для перемоги */
-}
-
-.message-label.lose-message {
-    -fx-text-fill: #e74c3c; /* Червоний для поразки */
 }

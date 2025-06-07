@@ -2,55 +2,50 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
   fx:controller="com.guessthewordapp.presentation.controllers.LoginController"
-  alignment="CENTER"
-  spacing="20"
-  styleClass="container"
-  style="-fx-background-color: #ecf0f1;">
+  alignment="CENTER" spacing="20"
+  styleClass="root-background">
 
-  <VBox alignment="CENTER" spacing="30" maxWidth="400" style="-fx-background-color: white; -fx-padding: 30; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10,0,0,2);">
-    <!-- Заголовок -->
+  <VBox alignment="CENTER" spacing="30" maxWidth="400" styleClass="form-panel">
+    <padding>
+      <Insets top="30" right="30" bottom="30" left="30"/>
+    </padding>
     <VBox alignment="CENTER" spacing="10">
-      <Label text="Вхід до системи" styleClass="title"/>
-      <Label text="Введіть ваші облікові дані" style="-fx-text-fill: #7f8c8d; -fx-font-size: 14px;"/>
+      <Label text="Вхід до системи" styleClass="title-text"/>
+      <Label text="Введіть ваші облікові дані" styleClass="subtitle-text"/>
     </VBox>
 
-    <!-- Форма входу -->
-    <VBox alignment="CENTER" spacing="15" style="-fx-padding: 0 20px;">
-      <VBox spacing="5">
-        <Label text="Електронна пошта" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
-        <TextField fx:id="emailField" styleClass="input-field" promptText="example@domain.com"/>
+    <VBox alignment="CENTER" spacing="15" styleClass="form-fields-container">
+      <VBox spacing="5" HBox.hgrow="ALWAYS">
+        <Label text="Електронна пошта" styleClass="input-label"/>
+        <TextField fx:id="emailField" styleClass="text-input-field" promptText="example@domain.com" maxWidth="Infinity"/>
       </VBox>
 
-      <VBox spacing="5">
-        <Label text="Пароль" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
-        <PasswordField fx:id="passwordField" styleClass="input-field"/>
+      <VBox spacing="5" HBox.hgrow="ALWAYS">
+        <Label text="Пароль" styleClass="input-label"/>
+        <PasswordField fx:id="passwordField" styleClass="text-input-field" maxWidth="Infinity"/>
       </VBox>
 
-      <HBox alignment="CENTER_LEFT" spacing="10">
-        <CheckBox text="Запам'ятати мене" style="-fx-text-fill: #2c3e50;"/>
-        <Hyperlink text="Забули пароль?" style="-fx-text-fill: #3498db;"/>
+      <HBox alignment="CENTER_LEFT" spacing="10" maxWidth="Infinity">
+        <CheckBox text="Запам'ятати мене" styleClass="checkbox-text"/>
+        <Hyperlink text="Забули пароль?" styleClass="hyperlink-text"/>
       </HBox>
 
       <Label fx:id="errorLabel" styleClass="error-label"/>
     </VBox>
 
-    <!-- Кнопки -->
-    <VBox alignment="CENTER" spacing="15">
-      <Button text="Увійти" onAction="#onLoginClick" styleClass="primary-button"/>
+    <VBox alignment="CENTER" spacing="15" VBox.vgrow="NEVER">
+      <Button fx:id="loginButton" text="Увійти" onAction="#handleLogin" styleClass="primary-action-button" maxWidth="Infinity"/>
       <HBox alignment="CENTER" spacing="5">
-        <Label text="Ще не зареєстровані?" style="-fx-text-fill: #7f8c8d;"/>
-        <Button text="Створити акаунт" onAction="#onRegisterLinkClick" styleClass="secondary-button"/>
+        <Label text="Ще не зареєстровані?" styleClass="info-text"/>
+        <Button fx:id="registerButton" text="Створити акаунт" onAction="#handleRegisterLink" styleClass="text-only-button"/>
       </HBox>
     </VBox>
   </VBox>
 
-  <!-- Кнопка повноекранного режиму -->
   <Button fx:id="fullscreenButton" text="Повноекранний режим" onAction="#toggleFullscreen"
-    styleClass="secondary-button"
-    style="-fx-background-radius: 20px; -fx-padding: 5px 15px; -fx-font-size: 12px; -fx-min-width: 160px;"/>
+    styleClass="fullscreen-toggle-button" VBox.vgrow="NEVER"/>
 </VBox>

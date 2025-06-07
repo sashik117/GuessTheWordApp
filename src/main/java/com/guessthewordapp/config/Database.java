@@ -3,6 +3,8 @@ package com.guessthewordapp.config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -18,25 +20,18 @@ public class Database {
         HikariConfig config = new HikariConfig();
         try {
             // Конфігурація для основної бази
-            config.setJdbcUrl("jdbc:sqlite:./guesstheword.db"); // Повний шлях до файлу БД
+            config.setJdbcUrl("jdbc:sqlite:./guesstheword.db");
             config.setDriverClassName("org.sqlite.JDBC");
             config.setMaximumPoolSize(10);
-            config.setConnectionTimeout(30000); // 30 секунд на з'єднання
-            config.setIdleTimeout(600000); // 10 хвилин простою
-            config.setMaxLifetime(1800000); // 30 хвилин для живучості з'єднання
+            config.setConnectionTimeout(30000);
+            config.setIdleTimeout(600000);
+            config.setMaxLifetime(1800000);
+            config.addDataSourceProperty("foreign_keys", "true");
 
             dataSource = new HikariDataSource(config);
 
-            // Створення таблиці game_sessions
-            try (Connection conn = dataSource.getConnection();
-                Statement stmt = conn.createStatement()) {
-                String createTableSQL = "CREATE TABLE IF NOT EXISTS game_sessions (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "user_id INTEGER NOT NULL," +
-                    "started_at TIMESTAMP NOT NULL," +
-                    "ended_at TIMESTAMP NOT NULL)";
-                stmt.execute(createTableSQL);
-            }
+            // Перевірка та оновлення схеми
+            checkAndUpdateSchema(dataSource);
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Failed to initialize main database pool", e);
@@ -44,6 +39,28 @@ public class Database {
         }
     }
 
+    private static void checkAndUpdateSchema(DataSource dataSource) {
+        try (Connection conn = dataSource.getConnection();
+            Statement stmt = conn.createStatement()) {
+
+            // Перевірка наявності стовпця description
+            if (!columnExists(conn, "Word", "description")) {
+                LOGGER.info("Adding description column to Word table...");
+                stmt.execute("ALTER TABLE Word ADD COLUMN description TEXT");
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, "Schema update failed", e);
+        }
+    }
+
+    public static boolean columnExists(Connection conn, String table, String column) throws SQLException {
+        try (ResultSet rs = conn.getMetaData().getColumns(null, null, table, column)) {
+            return rs.next();
+        }
+    }
+
+    // Інші методи без змін...
     public static DataSource getDataSource() {
         return dataSource;
     }
@@ -52,11 +69,21 @@ public class Database {
         if (testDataSource == null) {
             HikariConfig testConfig = new HikariConfig();
             try {
-                // Конфігурація для тестової бази
-                testConfig.setJdbcUrl("jdbc:sqlite::memory:"); // in-memory база
+                testConfig.setJdbcUrl("jdbc:sqlite::memory:");
                 testConfig.setDriverClassName("org.sqlite.JDBC");
                 testConfig.setMaximumPoolSize(5);
                 testDataSource = new HikariDataSource(testConfig);
+
+                // Ініціалізація тестової БД
+                try (Connection conn = testDataSource.getConnection();
+                    Statement stmt = conn.createStatement()) {
+                    stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Word ("
+                        + "word_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                        + "text TEXT NOT NULL,"
+                        + "difficulty INTEGER NOT NULL,"
+                        + "language TEXT NOT NULL,"
+                        + "description TEXT)");
+                }
             } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "Failed to initialize test database pool", e);
                 throw new RuntimeException(e);

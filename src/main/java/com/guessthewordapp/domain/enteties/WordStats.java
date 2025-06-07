@@ -1,35 +1,39 @@
 package com.guessthewordapp.domain.enteties;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor; // <--- ЦЯ АНОТАЦІЯ ВИРІШУЄ ПРОБЛЕМУ З КОНСТРУКТОРОМ БЕЗ АРГУМЕНТІВ
 
-import java.util.Objects;
-
-/**
- * Сутність, що представляє статистику для слова.
- */
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@Table(name = "WordStats")
+@Data // Генерує геттери, сетери, toString, equals, hashCode
+@NoArgsConstructor // Явно вказуємо Lombok створити конструктор без аргументів
+@AllArgsConstructor // Явно вказуємо Lombok створити конструктор з усіма полями
 public class WordStats {
-    private Long id; // Відповідає stat_id
-    private Long wordId; // Відповідає word_id
-    private int correctCount; // Відповідає correct_count
-    private int totalCount; // Відповідає total_count
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "stat_id")
+    private Long id;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WordStats that = (WordStats) o;
-        return Objects.equals(id, that.id);
-    }
+    @Column(name = "word_id")
+    private Long wordId;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Column(name = "correct_count")
+    private Integer correctCount;
+
+    @Column(name = "total_count")
+    private Integer totalCount;
+
+    // ВИДАЛІТЬ УСІ ВРУЧНУ ПРОПИСАНІ КОНСТРУКТОРИ, ГЕТТЕРИ ТА СЕТТЕРИ.
+    // Lombok(@Data, @NoArgsConstructor, @AllArgsConstructor) зробить це за вас.
+    // Якщо ви залишите їх, вони можуть конфліктувати з Lombok.
 }

@@ -1,69 +1,75 @@
 package com.guessthewordapp.presentation.controllers;
 
-import com.guessthewordapp.config.SpringContextProvider;
+import com.guessthewordapp.MainApp;
+import com.guessthewordapp.presentation.view.viewmodels.SettingsViewModel; // Імпортуємо ViewModel
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 @Component
 public class SettingsController {
 
+    @FXML private ToggleButton lightThemeToggle;
+    @FXML private ToggleButton darkThemeToggle;
     @FXML private Button logoutButton;
     @FXML private Button adminLoginButton;
     @FXML private Button backButton;
     @FXML private Button fullscreenButton;
-    @FXML private Label titleLabel;
+
+    private ToggleGroup themeToggleGroup; // Declare here, initialize in `initialize`
+
+    private final SettingsViewModel settingsViewModel; // Інжектуємо ViewModel
+
+    public SettingsController(SettingsViewModel settingsViewModel) {
+        this.settingsViewModel = settingsViewModel;
+    }
 
     @FXML
     private void initialize() {
-        // Ініціалізація, якщо потрібно
+        themeToggleGroup = new ToggleGroup();
+
+        lightThemeToggle.setToggleGroup(themeToggleGroup);
+        darkThemeToggle.setToggleGroup(themeToggleGroup);
+
+        // Bind toggle buttons' selected state to ViewModel properties
+        lightThemeToggle.selectedProperty().bindBidirectional(settingsViewModel.lightThemeSelectedProperty());
+        darkThemeToggle.selectedProperty().bindBidirectional(settingsViewModel.darkThemeSelectedProperty());
+
+        // Listen for navigation requests from ViewModel
+        settingsViewModel.navigationRequestProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                switch (newVal) {
+                    case "login":
+                        MainApp.getInstance().showLoginScene();
+                        break;
+                    case "admin":
+                        MainApp.getInstance().showAdminWordsScene();
+                        break;
+                    case "mainMenu":
+                        MainApp.getInstance().showMainMenuScene();
+                        break;
+                }
+                settingsViewModel.clearNavigationRequest(); // Очищаємо запит після обробки
+            }
+        });
     }
 
     @FXML
     private void onLogoutClick() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
-            loader.setControllerFactory(SpringContextProvider.getApplicationContext()::getBean);
-            Parent root = loader.load();
-
-            Stage stage = (Stage) logoutButton.getScene().getWindow();
-            Scene scene = new Scene(root, 900, 650);
-            stage.setScene(scene);
-            stage.setTitle("Guess the Word — Вхід");
-            stage.setFullScreen(true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        settingsViewModel.logout();
     }
 
     @FXML
     private void onAdminLoginClick() {
-        // Тут буде логіка входу як адміністратор (поки просто повідомлення)
-        titleLabel.setText("Функція 'Увійти як адміністратор' буде реалізована пізніше");
+        settingsViewModel.openAdminPanel();
     }
 
     @FXML
     private void onBackClick() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main_menu.fxml"));
-            loader.setControllerFactory(SpringContextProvider.getApplicationContext()::getBean);
-            Parent root = loader.load();
-
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            Scene scene = new Scene(root, 900, 650);
-            stage.setScene(scene);
-            stage.setTitle("Guess the Word — Головне меню");
-            stage.setFullScreen(true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        settingsViewModel.goBack();
     }
 
     @FXML
