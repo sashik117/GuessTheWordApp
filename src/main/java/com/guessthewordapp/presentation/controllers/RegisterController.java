@@ -69,14 +69,15 @@ public class RegisterController {
         }
 
         try {
-            authenticationService.register(username, password, email,
-                String.valueOf(UserRole.PLAYER));
+            authenticationService.register(username, password, email, String.valueOf(UserRole.PLAYER));
             errorLabel.setText("Реєстрація успішна");
-            usernameField.clear();
-            emailField.clear();
-            passwordField.clear();
-            confirmPasswordField.clear();
-            MainApp.getInstance().showLoginScene();
+            showSuccessAlert("Реєстрація", "Реєстрація пройшла успішно!", () -> {
+                usernameField.clear();
+                emailField.clear();
+                passwordField.clear();
+                confirmPasswordField.clear();
+                MainApp.getInstance().showLoginScene();
+            });
         } catch (IllegalArgumentException e) {
             errorLabel.setText(e.getMessage());
         } catch (Exception e) {
@@ -93,5 +94,18 @@ public class RegisterController {
     private void toggleFullscreen() {
         Stage stage = (Stage) registerButton.getScene().getWindow();
         stage.setFullScreen(!stage.isFullScreen());
+    }
+
+    private void showSuccessAlert(String title, String message, Runnable onConfirm) {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.getButtonTypes().setAll(new javafx.scene.control.ButtonType("OK", javafx.scene.control.ButtonBar.ButtonData.OK_DONE));
+        alert.showAndWait().ifPresent(response -> {
+            if (response.getButtonData() == javafx.scene.control.ButtonBar.ButtonData.OK_DONE) {
+                onConfirm.run();
+            }
+        });
     }
 }

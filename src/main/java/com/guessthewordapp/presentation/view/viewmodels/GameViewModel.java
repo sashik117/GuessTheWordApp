@@ -22,6 +22,7 @@ public class GameViewModel {
     private final BooleanProperty hintButtonDisabledProperty = new SimpleBooleanProperty(false);
     private final ObservableList<String> hintsList = FXCollections.observableArrayList();
     private final BooleanProperty gameWonProperty = new SimpleBooleanProperty(false);
+    private boolean gameOver = false; // Новий прапор для відстеження завершення гри
 
     private final ObservableMap<Character, CharacterState> keyboardLetterStates = FXCollections.observableHashMap();
 
@@ -121,6 +122,7 @@ public class GameViewModel {
             hintsList.clear();
             hintButtonDisabledProperty.set(false);
             gameWonProperty.set(false);
+            gameOver = false; // Скидаємо прапор завершення гри
 
             resetKeyboardStates();
             logger.debug("New game started with word: {}", currentWord);
@@ -137,7 +139,7 @@ public class GameViewModel {
     }
 
     public boolean processGuess(String guess) {
-        if (guess.isEmpty()) {
+        if (guess.isEmpty() || gameOver) { // Блокуємо вгадування після завершення гри
             return false;
         }
 
@@ -156,6 +158,10 @@ public class GameViewModel {
     }
 
     public boolean processLetterGuess(char letter) {
+        if (gameOver) { // Блокуємо вгадування після завершення гри
+            return false;
+        }
+
         char lowerCaseLetter = Character.toLowerCase(letter);
         if (guessedLetters.contains(lowerCaseLetter)) {
             return false;
@@ -168,6 +174,10 @@ public class GameViewModel {
     }
 
     private boolean checkLetter(char letter) {
+        if (gameOver) { // Блокуємо подальші дії після завершення гри
+            return false;
+        }
+
         boolean found = false;
         String currentWord = currentGameWord.getWord();
 
@@ -199,6 +209,10 @@ public class GameViewModel {
     }
 
     private boolean checkWord(String word) {
+        if (gameOver) { // Блокуємо подальші дії після завершення гри
+            return false;
+        }
+
         String currentWord = currentGameWord.getWord();
         boolean isCorrect = word.equalsIgnoreCase(currentWord);
 
@@ -241,7 +255,7 @@ public class GameViewModel {
     }
 
     public void showHint() {
-        if (hintsUsed < 3) {
+        if (hintsUsed < 3 && !gameOver) {
             if (hintsUsed < 2) {
                 hintsList.add(hintLevels[hintsUsed]);
                 logger.debug("Hint shown: {}", hintLevels[hintsUsed]);
@@ -302,7 +316,9 @@ public class GameViewModel {
     }
 
     public void endGame(boolean win) {
+        if (gameOver) return; // Запобігаємо повторному виклику
         logger.debug("Ending game: win={}", win);
+        gameOver = true; // Встановлюємо прапор завершення гри
         if (userId != null) {
             statsService.updateOverallGameStats(userId, win);
             logger.debug("Updated overall game stats for user: {}, win: {}", userId, win);

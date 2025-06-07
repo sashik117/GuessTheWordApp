@@ -1,7 +1,6 @@
 package com.guessthewordapp.presentation.controllers;
 
 import com.guessthewordapp.MainApp;
-
 import com.guessthewordapp.domain.enteties.User;
 import com.guessthewordapp.infrastructure.AuthenticationService;
 import com.guessthewordapp.presentation.view.viewmodels.LoginViewModel;
@@ -52,7 +51,6 @@ public class LoginController {
     @FXML
     private void initialize() {
         logger.debug("LoginController: initialize() called");
-        // Bind UI to ViewModel
         emailField.textProperty().bindBidirectional(loginViewModel.emailInputProperty());
         passwordField.textProperty().bindBidirectional(loginViewModel.passwordInputProperty());
         errorLabel.textProperty().bind(loginViewModel.errorLabelTextProperty());
@@ -72,13 +70,15 @@ public class LoginController {
         try {
             logger.debug("Attempting login for email: {}", email);
             if (loginViewModel.login()) {
-                User user = authenticationService.login(email, password); // Для отримання userId
+                User user = authenticationService.login(email, password);
                 Long userId = user.getId();
                 logger.info("Login successful for userId: {}", userId);
-                MainApp.getInstance().setCurrentUserId(userId);
-                emailField.clear();
-                passwordField.clear();
-                MainApp.getInstance().showMainMenuScene();
+                showSuccessAlert("Успішний вхід", "Ви успішно увійшли в систему!", () -> {
+                    MainApp.getInstance().setCurrentUserId(userId);
+                    emailField.clear();
+                    passwordField.clear();
+                    MainApp.getInstance().showMainMenuScene();
+                });
             }
         } catch (IllegalArgumentException e) {
             logger.warn("Login failed: {}", e.getMessage());
@@ -98,5 +98,18 @@ public class LoginController {
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.setFullScreen(!stage.isFullScreen());
         logger.debug("Toggled fullscreen mode: {}", stage.isFullScreen());
+    }
+
+    private void showSuccessAlert(String title, String message, Runnable onConfirm) {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.getButtonTypes().setAll(new javafx.scene.control.ButtonType("OK", javafx.scene.control.ButtonBar.ButtonData.OK_DONE));
+        alert.showAndWait().ifPresent(response -> {
+            if (response.getButtonData() == javafx.scene.control.ButtonBar.ButtonData.OK_DONE) {
+                onConfirm.run();
+            }
+        });
     }
 }

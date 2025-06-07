@@ -2,6 +2,7 @@ package com.guessthewordapp.presentation.controllers;
 
 import com.guessthewordapp.MainApp;
 import com.guessthewordapp.presentation.view.viewmodels.GameViewModel;
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
 import javafx.event.ActionEvent;
@@ -37,6 +38,7 @@ public class GameController {
     private final Map<Character, Button> keyboardButtons = new HashMap<>();
     private Stage primaryStage;
     private Long userId;
+    private boolean gameResultShown = false;
 
     public GameController(GameViewModel gameViewModel) {
         this.gameViewModel = Objects.requireNonNull(gameViewModel, "GameViewModel cannot be null");
@@ -44,16 +46,14 @@ public class GameController {
 
     public void initialize(Long userId) {
         this.userId = userId;
-        gameViewModel.setUserId(userId); // Передача userId до ViewModel
+        gameViewModel.setUserId(userId);
         logger.debug("GameController initialized with userId: {}", userId);
         try {
-            // Bind UI elements to ViewModel properties
             wordLabel.textProperty().bind(gameViewModel.wordDisplayProperty());
             attemptsLabel.textProperty().bind(gameViewModel.attemptsTextProperty());
             progressBar.progressProperty().bind(gameViewModel.progressBarProperty());
             hintButton.disableProperty().bind(gameViewModel.hintButtonDisabledProperty());
 
-            // Listen to hintsList changes
             gameViewModel.hintsListProperty().addListener((ListChangeListener<String>) c -> {
                 if (hintBox != null) {
                     hintBox.getChildren().clear();
@@ -65,10 +65,8 @@ public class GameController {
                 }
             });
 
-            // Set up the keyboard
             setupUkrainianKeyboard();
 
-            // Listen to keyboard changes
             gameViewModel.getKeyboardLetterStates().addListener((MapChangeListener<Character, GameViewModel.CharacterState>) change -> {
                 if (change.getValueAdded() != null) {
                     updateKeyboardButtonUI(change.getKey(), change.getValueAdded());
@@ -77,7 +75,6 @@ public class GameController {
 
             gameViewModel.initializeGame();
 
-            // Initialize other components
             if (fullscreenButton != null) fullscreenButton.setOnAction(e -> toggleFullscreen());
             if (guessField != null) guessField.setOnAction(e -> handleGuess());
             if (submitButton != null) submitButton.setOnAction(e -> handleGuess());
@@ -85,14 +82,23 @@ public class GameController {
             if (attemptsLabel != null) attemptsLabel.getStyleClass().add("bold-text");
             if (hintsTitleLabel != null) hintsTitleLabel.getStyleClass().add("bold-text");
 
-            // Listen to game state changes
+            // Додаємо періодичну перевірку стану гри
+            new java.util.Timer().scheduleAtFixedRate(new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    if (gameViewModel.getAttemptsLeft() <= 0 && !gameResultShown) {
+                        Platform.runLater(() -> {
+                            logger.debug("Game lost detected via periodic check");
+                            showGameResult(false);
+                        });
+                    }
+                }
+            }, 0, 100); // Перевіряємо кожні 100 мс
+
             gameViewModel.gameWonProperty().addListener((obs, oldVal, newVal) -> {
-                if (newVal) {
+                if (newVal && !gameResultShown) {
                     logger.debug("Game won detected via gameWonProperty listener");
                     showGameResult(true);
-                } else if (gameViewModel.getAttemptsLeft() <= 0) {
-                    logger.debug("Game lost detected via attemptsLeft <= 0");
-                    showGameResult(false);
                 }
             });
 
@@ -129,7 +135,7 @@ public class GameController {
 
     @FXML
     private void handleGuess() {
-        if (guessField == null) return;
+        if (guessField == null || gameViewModel.getAttemptsLeft() <= 0) return;
 
         String guess = guessField.getText().trim();
         if (guess.isEmpty()) {
@@ -141,7 +147,6 @@ public class GameController {
         boolean processed = gameViewModel.processGuess(guess.toLowerCase());
         guessField.clear();
 
-        // Show feedback for incorrect guesses
         if (!processed && guess.length() == 1) {
             showAlert("Увага", "Ви вже вводили цю букву або вона неправильна");
         }
@@ -149,6 +154,8 @@ public class GameController {
 
     @FXML
     private void handleLetterGuess(ActionEvent event) {
+        if (gameViewModel.getAttemptsLeft() <= 0) return;
+
         Button letterButton = (Button) event.getSource();
         String letterStr = letterButton.getText().toLowerCase();
         char letter = letterStr.charAt(0);
@@ -158,6 +165,7 @@ public class GameController {
 
     @FXML
     private void showHint() {
+        if (gameViewModel.getAttemptsLeft() <= 0) return;
         logger.debug("Showing hint");
         gameViewModel.showHint();
     }
@@ -215,7 +223,9 @@ public class GameController {
     }
 
     private void showGameResult(boolean win) {
+        if (gameResultShown) return;
         logger.debug("Showing game result: win={}", win);
+        gameResultShown = true;
         String message;
         if (win) {
             message = "Вітаємо! Ви вгадали слово: " + gameViewModel.getCurrentWord();
@@ -226,18 +236,25 @@ public class GameController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Результат гри");
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(message + "\nБажаєте почати нову гру?");
+        ButtonType yesButton = new ButtonType("Так", ButtonBar.ButtonData.YES);
+        ButtonType noButton = new ButtonType("Ні", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(yesButton, noButton);
 
-        // Set owner for proper dialog positioning
         if (primaryStage != null) {
             alert.initOwner(primaryStage);
         }
 
-        alert.showAndWait();
-        logger.debug("Starting new game after showing result");
-        gameViewModel.startNewGame();
+        alert.showAndWait().ifPresent(response -> {
+            if (response == yesButton) {
+                gameViewModel.startNewGame();
+                gameResultShown = false;
+            } else {
+                MainApp mainApp = MainApp.getInstance();
+                mainApp.showMainMenuScene();
+            }
+        });
 
-        // Оновлюємо статистику в головному меню
         MainApp.getInstance().refreshMainMenuStatistics();
     }
 
@@ -247,7 +264,6 @@ public class GameController {
         alert.setHeaderText(null);
         alert.setContentText(message);
 
-        // Set owner for proper dialog positioning
         if (primaryStage != null) {
             alert.initOwner(primaryStage);
         }
